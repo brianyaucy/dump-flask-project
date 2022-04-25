@@ -1,5 +1,7 @@
 # Dump Flask Project
 
+---
+
 ## Usage
 
 ### Step 1: Git clone the repo
@@ -23,3 +25,19 @@ By default the application will listen on **tcp/8000**:
 ```
 python3 app.py
 ```
+
+---
+
+## Functions
+
+- Security
+  - [x] Login
+  - [x] Password Complexity 
+  - [x] 2FA Authentication
+  - [ ] Email verification
+- Function
+  - [x] Post
+  - [x] Like
+  - [x] Timeline Generator
+  - [ ] Bulk check domains & visualization
+  - [ ] Bulk check IPs & visualization 
