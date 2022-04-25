@@ -65,6 +65,7 @@ Timeline
                 </div>
                 <br/>
                 <button type="submit" class="btn btn-lg btn-primary">Generate</button>
+                <a id="btn-Convert-Html2Image" class="btn btn-lg btn-primary" href="#">Download</a>
             </div>
         </form>
     </div>
@@ -74,9 +75,9 @@ Timeline
 
 <br/>
 
-<div class="page">
+<div id="timeline-content" class="page">
     <h2 align="center">Timeline</h2>
-    <div class="timeline">
+    <div id="timeline" class="timeline">
         {% for group in timeline_items %}
             {% for date, event_list in group.items() %}
             <div class="timeline__group">
@@ -103,6 +104,32 @@ Timeline
         {% endfor %}
     </div>
 </div>
+
+
+
+
+<script>
+    $(document).ready(function () {
+
+        // Global variable
+        var element = $("#timeline-content");
+        var getCanvas; // Global variable
+
+        html2canvas(element, {
+            onrendered: function (canvas) {
+                $("#previewImage").append(canvas);
+                getCanvas = canvas;
+            }
+        });
+
+        $("#btn-Convert-Html2Image").on('click', function () {
+            var imgageData = getCanvas.toDataURL("image/png");
+            var newData = imgageData.replace(/^data:image\/png/, "data:application/octet-stream");
+
+            $("#btn-Convert-Html2Image").attr("download", "timeline.png").attr("href", newData);
+        });
+    });
+</script>
 
   <style>
     .r-title{
