@@ -1,0 +1,6 @@
+.DS_Store
+bin/
+lib/
+include/
+pyvenv.cfg/
+website/database.db

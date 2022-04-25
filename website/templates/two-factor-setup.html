@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Two Factor Authentication Setup</h1>
+    <p>You are almost done! Please start Google Authenticator and scan the following QR Code with it:</p>
+    <p>{{ qr | safe }}</p>
+
+    <p>If you cannot see the QR Code, please use the follow button to reveal the OTP secret token.</p>
+    <a class="btn btn-primary" data-bs-toggle="collapse" href="#OTPSecret" role="button" aria-expanded="false" aria-controls="OTPSecret">Reval OTP Secret Token</a>
+    <div class="collapse" id="OTPSecret">
+        <div class="card card-body" style="width: 300px;">
+            <code>{{otp_secret}}</code>
+        </div>
+    </div>
+
+    <p><br/>I'm done, take me to the <a href="{{ url_for('auth.login') }}">Login</a> page!</p>
+{% endblock %}

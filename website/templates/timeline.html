@@ -1,0 +1,358 @@
+{% extends "base.html" %}
+
+{% block title %}
+Timeline
+{% endblock %}
+
+{% block content %}
+
+<h1 align="center">Timeline Generator</h1>
+<div class="card border-dark">
+    <div class="card-body">
+        <div class="card-text">
+            <p>For each line, input in the following format:<br/>
+                <p class="user-select-all"><code>[YYYY-mm-dd] | [hh:mm:ss] | [Host] | [Actor] | [Victim] | [Title] | [Description]</code></p>
+            </p>
+        </div>
+        <form method="post">
+            <textarea name="text" id="text" class="form-control" rows="20" placeholder="Your timeline data">{{ input_text }}</textarea>
+            <br/>
+            <div align="center">
+                <div class="form-floating">
+                    <select id="timezone" name="timezone" class="form-select" aria-label="timezoneselect">
+                        <option value="-12:00">(GMT -12:00) Eniwetok, Kwajalein</option>
+                        <option value="-11:00">(GMT -11:00) Midway Island, Samoa</option>
+                        <option value="-10:00">(GMT -10:00) Hawaii</option>
+                        <option value="-09:50">(GMT -9:30) Taiohae</option>
+                        <option value="-09:00">(GMT -9:00) Alaska</option>
+                        <option value="-08:00">(GMT -8:00) Pacific Time (US &amp; Canada)</option>
+                        <option value="-07:00">(GMT -7:00) Mountain Time (US &amp; Canada)</option>
+                        <option value="-06:00">(GMT -6:00) Central Time (US &amp; Canada), Mexico City</option>
+                        <option value="-05:00">(GMT -5:00) Eastern Time (US &amp; Canada), Bogota, Lima</option>
+                        <option value="-04:50">(GMT -4:30) Caracas</option>
+                        <option value="-04:00">(GMT -4:00) Atlantic Time (Canada), Caracas, La Paz</option>
+                        <option value="-03:50">(GMT -3:30) Newfoundland</option>
+                        <option value="-03:00">(GMT -3:00) Brazil, Buenos Aires, Georgetown</option>
+                        <option value="-02:00">(GMT -2:00) Mid-Atlantic</option>
+                        <option value="-01:00">(GMT -1:00) Azores, Cape Verde Islands</option>
+                        <option value="+00:00" selected="selected">(GMT) Western Europe Time, London, Lisbon, Casablanca</option>
+                        <option value="+01:00">(GMT +1:00) Brussels, Copenhagen, Madrid, Paris</option>
+                        <option value="+02:00">(GMT +2:00) Kaliningrad, South Africa</option>
+                        <option value="+03:00">(GMT +3:00) Baghdad, Riyadh, Moscow, St. Petersburg</option>
+                        <option value="+03:50">(GMT +3:30) Tehran</option>
+                        <option value="+04:00">(GMT +4:00) Abu Dhabi, Muscat, Baku, Tbilisi</option>
+                        <option value="+04:50">(GMT +4:30) Kabul</option>
+                        <option value="+05:00">(GMT +5:00) Ekaterinburg, Islamabad, Karachi, Tashkent</option>
+                        <option value="+05:50">(GMT +5:30) Bombay, Calcutta, Madras, New Delhi</option>
+                        <option value="+05:75">(GMT +5:45) Kathmandu, Pokhara</option>
+                        <option value="+06:00">(GMT +6:00) Almaty, Dhaka, Colombo</option>
+                        <option value="+06:50">(GMT +6:30) Yangon, Mandalay</option>
+                        <option value="+07:00">(GMT +7:00) Bangkok, Hanoi, Jakarta</option>
+                        <option value="+08:00">(GMT +8:00) Beijing, Perth, Singapore, Hong Kong</option>
+                        <option value="+08:75">(GMT +8:45) Eucla</option>
+                        <option value="+09:00">(GMT +9:00) Tokyo, Seoul, Osaka, Sapporo, Yakutsk</option>
+                        <option value="+09:50">(GMT +9:30) Adelaide, Darwin</option>
+                        <option value="+10:00">(GMT +10:00) Eastern Australia, Guam, Vladivostok</option>
+                        <option value="+10:50">(GMT +10:30) Lord Howe Island</option>
+                        <option value="+11:00">(GMT +11:00) Magadan, Solomon Islands, New Caledonia</option>
+                        <option value="+11:50">(GMT +11:30) Norfolk Island</option>
+                        <option value="+12:00">(GMT +12:00) Auckland, Wellington, Fiji, Kamchatka</option>
+                        <option value="+12:75">(GMT +12:45) Chatham Islands</option>
+                        <option value="+13:00">(GMT +13:00) Apia, Nukualofa</option>
+                        <option value="+14:00">(GMT +14:00) Line Islands, Tokelau</option>
+                    </select>
+                    <label for="timezone">Timezone</label>
+                </div>
+                <br/>
+                <button type="submit" class="btn btn-lg btn-primary">Generate</button>
+            </div>
+        </form>
+    </div>
+</div>
+<br/>
+
+
+<br/>
+
+<div class="page">
+    <h2 align="center">Timeline</h2>
+    <div class="timeline">
+        {% for group in timeline_items %}
+            {% for date, event_list in group.items() %}
+            <div class="timeline__group">
+                <span class="timeline__date time" aria-hidden="true">{{date}}</span>
+                {% for event in event_list %}
+                <div class="timeline__cards">
+                    <div class="timeline__card card">
+                        <header class="card__header">
+                            <time class="time">
+                                <span class="time__day">{{event.time}}</span>
+                                <span class="time__month">{{event.timezone}}</span>
+                            </time>
+                            <h3 class="card__title r-title">{{event.title}}</h3>
+                        </header>
+                        <div class="card__content">
+                            <p class="fw-light">Host: {{event.host}} | Actor: {{event.user}} | Victim: {{event.victim}}</p>
+                            <p>{{event.desc}}</p>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% endfor %}
+        {% endfor %}
+    </div>
+</div>
+
+  <style>
+    .r-title{
+    margin-top: var(--rTitleMarginTop, 0) !important;
+    margin-bottom: var(--rTitleMarginBottom, 0) !important;
+    }
+    p:not([class]){
+    line-height: var(--cssTypographyLineHeight, 1.78);
+    margin-top: var(--cssTypographyBasicMargin, 1em);
+    margin-bottom: 0;
+    }
+
+    p:not([class]):first-child{
+    margin-top: 0;
+    }
+
+    /*
+    text component
+    */
+
+    .text{
+    display: var(--textDisplay, inline-flex);
+    font-size: var(--textFontSize, 1rem);  
+    }
+
+    /*
+    time component
+    */
+
+    /*
+    core styles
+    */
+
+    .time{
+    display: var(--timeDisplay, inline-flex);
+    }
+
+    /*
+    extensions
+    */
+
+    .time__month{
+        margin-left: var(--timelineMounthMarginLeft, .25em);
+    }
+
+    .time__hhmmssz{
+        margin-left: var(--timelineMounthMarginLeft, .25em);
+    }
+
+    /*
+    skin
+    */
+
+    .time{
+    padding: var(--timePadding, .25rem 1.25rem .25rem);
+    background-color: var(--timeBackgroundColor, #f0f0f0);
+
+    font-size: var(--timeFontSize, .75rem);
+    font-weight: var(--timeFontWeight, 700);
+    text-transform: var(--timeTextTransform, uppercase);
+    color: var(--timeColor, currentColor);
+    }
+
+    /*
+    card component
+    */
+
+    /*
+    core styles
+    */
+
+    .card{
+    padding: var(--timelineCardPadding, 1.5rem 1.5rem 1.25rem);
+    }
+
+    .card__content{
+    margin-top: var(--cardContentMarginTop, .5rem);
+    }
+
+    /*
+    skin
+    */
+
+    .card{
+    border-radius: var(--timelineCardBorderRadius, 2px);
+    border-left: var(--timelineCardBorderLeftWidth, 3px) solid var(--timelineCardBorderLeftColor, var(--uiTimelineMainColor));
+    box-shadow: var(--timelineCardBoxShadow, 0 1px 3px 0 rgba(0, 0, 0, .12), 0 1px 2px 0 rgba(0, 0, 0, .24));
+    background-color: var(--timelineCardBackgroundColor, #fff);
+    }
+
+    /*
+    extensions
+    */
+
+    .card__title{
+    --rTitleMarginTop: var(--cardTitleMarginTop, 1rem);
+    font-size: var(--cardTitleFontSize, 1.25rem);
+    }
+
+    /*
+    =====
+    CORE STYLES
+    =====
+    */
+
+    .timeline{
+    display: var(--timelineDisplay, grid);
+    grid-row-gap: var(--timelineGroupsGap, 2rem);
+    }
+
+    /*
+    1. If timeline__year isn't displaed the gap between it and timeline__cards isn't displayed too
+    */
+
+    .timeline__date{
+    margin-bottom: 1.25rem; /* 1 */
+    }
+
+    .timeline__cards{
+    display: var(--timeloneCardsDisplay, grid);
+    grid-row-gap: var(--timeloneCardsGap, 1.5rem);
+    }
+
+
+    /*
+    =====
+    SKIN
+    =====
+    */
+
+    .timeline{
+    --uiTimelineMainColor: var(--timelineMainColor, #222);
+    --uiTimelineSecondaryColor: var(--timelineSecondaryColor, #fff);
+
+    border-left: var(--timelineLineWidth, 3px) solid var(--timelineLineBackgroundColor, var(--uiTimelineMainColor));
+    padding-top: 1rem;
+    padding-bottom: 1.5rem;
+    }
+
+    .timeline__date{
+    --timePadding: var(--timelineYearPadding, .5rem 1.5rem);
+    --timeColor: var(--uiTimelineSecondaryColor);
+    --timeBackgroundColor: var(--uiTimelineMainColor);
+    --timeFontWeight: var(--timelineYearFontWeight, 400);
+    }
+
+    .timeline__card{
+    position: relative;
+    margin-left: var(--timelineCardLineGap, 1rem);
+    }
+
+    /*
+    1. Stoping cut box shadow
+    */
+
+    .timeline__cards{
+    overflow: hidden;
+    padding-top: .25rem; /* 1 */
+    padding-bottom: .25rem; /* 1 */
+    }
+
+    .timeline__card::before{
+    content: "";
+    width: 100%;
+    height: var(--timelineCardLineWidth, 2px);
+    background-color: var(--timelineCardLineBackgroundColor, var(--uiTimelineMainColor));
+
+    position: absolute;
+    top: var(--timelineCardLineTop, 1rem);
+    left: -50%;
+    z-index: -1;
+    }
+
+    /*
+    =====
+    SETTINGS
+    =====
+    */
+    /**/
+    .timeline{
+    --timelineMainColor: #4557bb;
+    }
+
+    /*
+    =====
+    DEMO
+    =====
+    */
+
+    body{
+    font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Open Sans, Ubuntu, Fira Sans, Helvetica Neue, sans-serif;
+    color: #222;
+
+    background-color: #f0f0f0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    }
+
+    p{
+    margin-top: 0;
+    margin-bottom: 1rem;
+    line-height: 1.5;
+    }
+
+    p:last-child{
+    margin-bottom: 0;
+    }
+
+    .page{
+    max-width: 47rem;
+    padding: 5rem 2rem 3rem;
+    margin-left: auto;
+    margin-right: auto;
+    }
+
+
+    .substack{
+    border:1px solid #EEE; 
+    background-color: #fff;
+    width: 100%;
+    max-width: 480px;
+    height: 280px;
+    margin: 1rem auto;;
+    }
+
+
+    .linktr{
+    display: flex;
+    justify-content: flex-end;
+    padding: 2rem;
+    text-align: center;
+    }
+
+    .linktr__goal{
+    background-color: rgb(209, 246, 255);
+    color: rgb(8, 49, 112);
+    box-shadow: rgb(8 49 112 / 24%) 0px 2px 8px 0px;
+    border-radius: 2rem;
+    padding: .75rem 1.5rem;
+    }
+
+    .r-link{
+        --uirLinkDisplay: var(--rLinkDisplay, inline-flex);
+        --uirLinkTextColor: var(--rLinkTextColor);
+        --uirLinkTextDecoration: var(--rLinkTextDecoration, none);
+
+        display: var(--uirLinkDisplay) !important;
+        color: var(--uirLinkTextColor) !important;
+        text-decoration: var(--uirLinkTextDecoration) !important;
+    }
+</style>
+{% endblock %}

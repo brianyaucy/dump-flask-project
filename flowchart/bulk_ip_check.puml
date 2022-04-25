@@ -1,0 +1,31 @@
+@startuml
+title "Bulk IP checking"
+
+start
+:User inputs a list of IP;
+repeat
+  fork
+    :IPInfo;
+    note right
+      * IP Resolve History
+      * Country
+      * ARN
+    end note
+    fork again
+    :OTX enrichment;
+    note right
+      * Number of pulses
+      * Open ports
+      * Indicator facts
+      * AV Detection Ratio
+    end note
+  end merge
+  :Compose an object and add into a list;
+repeat while (Done for all IP?) is (no)
+:Display summary;
+note right
+  * Within the results, which one is more interesting?
+end note
+:For each:\nDisplay results;
+stop
+@enduml

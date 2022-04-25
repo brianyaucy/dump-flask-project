@@ -1,0 +1,31 @@
+@startuml
+title "Bulk Domain checking"
+
+start
+:User inputs a list of domains;
+repeat
+  fork
+    :whois;
+    note right
+      * Domain age
+      * Registrar
+      * Owner
+      * Email
+    end note
+    fork again
+    :OTX enrichment;
+    note right
+      * Passive DNS
+      * Number of pulses
+      * Indicators
+    end note
+  end merge
+  :Compose an object and add into a list;
+repeat while (Done for all domains?) is (no)
+:Display summary;
+note right
+  * Within the results, which one is more interesting?
+end note
+:For each:\nDisplay results;
+stop
+@enduml
