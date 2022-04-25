@@ -38,7 +38,10 @@ python3 app.py
   - [ ] Logging wrapper
 - Function
   - [x] Post
-  - [x] Like
+    - [x] Like
+    - [x] Comment 
+    - [x] Delete
   - [x] Timeline Generator
+    - [ ] PNG Export
   - [ ] Bulk check domains & visualization
   - [ ] Bulk check IPs & visualization 
