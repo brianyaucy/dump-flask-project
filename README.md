@@ -35,6 +35,7 @@ python3 app.py
   - [x] Password Complexity 
   - [x] 2FA Authentication
   - [ ] Email verification
+  - [ ] Logging wrapper
 - Function
   - [x] Post
   - [x] Like
