@@ -65,7 +65,7 @@ Timeline
                 </div>
                 <br/>
                 <button type="submit" class="btn btn-lg btn-primary">Generate</button>
-                <a id="btn-Convert-Html2Image" class="btn btn-lg btn-primary" href="#">Download</a>
+                <a id="btn-Convert-Html2Image" class="btn btn-lg btn-primary" onclick="downloadtimeline()">Download</a>
             </div>
         </form>
     </div>
@@ -74,34 +74,35 @@ Timeline
 
 
 <br/>
-
-<div id="timeline-content" class="page">
-    <h2 align="center">Timeline</h2>
-    <div id="timeline" class="timeline">
-        {% for group in timeline_items %}
-            {% for date, event_list in group.items() %}
-            <div class="timeline__group">
-                <span class="timeline__date time" aria-hidden="true">{{date}}</span>
-                {% for event in event_list %}
-                <div class="timeline__cards">
-                    <div class="timeline__card card">
-                        <header class="card__header">
-                            <time class="time">
-                                <span class="time__day">{{event.time}}</span>
-                                <span class="time__month">{{event.timezone}}</span>
-                            </time>
-                            <h3 class="card__title r-title">{{event.title}}</h3>
-                        </header>
-                        <div class="card__content">
-                            <p class="fw-light">Host: {{event.host}} | Actor: {{event.actor}} | Victim: {{event.victim}}</p>
-                            <p>{{event.desc}}</p>
+<div id="timeline-div">
+    <div id="timeline-content" class="page">
+        <h2 align="center">Timeline</h2>
+        <div id="timeline" class="timeline">
+            {% for group in timeline_items %}
+                {% for date, event_list in group.items() %}
+                <div class="timeline__group">
+                    <span class="timeline__date time" aria-hidden="true">{{date}}</span>
+                    {% for event in event_list %}
+                    <div class="timeline__cards">
+                        <div class="timeline__card card">
+                            <header class="card__header">
+                                <time class="time">
+                                    <span class="time__day">{{event.time}}</span>
+                                    <span class="time__month">{{event.timezone}}</span>
+                                </time>
+                                <h3 class="card__title r-title">{{event.title}}</h3>
+                            </header>
+                            <div class="card__content">
+                                <p class="fw-light">Host: {{event.host}} | Actor: {{event.actor}} | Victim: {{event.victim}}</p>
+                                <p>{{event.desc}}</p>
+                            </div>
                         </div>
                     </div>
+                    {% endfor %}
                 </div>
                 {% endfor %}
-            </div>
             {% endfor %}
-        {% endfor %}
+        </div>
     </div>
 </div>
 
@@ -109,26 +110,19 @@ Timeline
 
 
 <script>
-    $(document).ready(function () {
-
-        // Global variable
-        var element = $("#timeline-content");
-        var getCanvas; // Global variable
-
-        html2canvas(element, {
-            onrendered: function (canvas) {
-                $("#previewImage").append(canvas);
-                getCanvas = canvas;
-            }
+    function downloadtimeline() {
+        var node = document.getElementById('timeline-div');
+        var options = {
+            quality: 1,
+            bgcolor: "#fff"
+        };
+        domtoimage.toJpeg(node, options).then(function (dataUrl) {
+            var link = document.createElement('a');
+            link.download = 'timeline.png';
+            link.href = dataUrl;
+            link.click();
         });
-
-        $("#btn-Convert-Html2Image").on('click', function () {
-            var imgageData = getCanvas.toDataURL("image/png");
-            var newData = imgageData.replace(/^data:image\/png/, "data:application/octet-stream");
-
-            $("#btn-Convert-Html2Image").attr("download", "timeline.png").attr("href", newData);
-        });
-    });
+    };
 </script>
 
   <style>
